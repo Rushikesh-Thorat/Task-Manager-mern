@@ -5,7 +5,7 @@ const path = require("path");
 const connectDB = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
-const { default: userRoutes } = require("./routes/userRoutes");
+const userRoutes  = require("./routes/userRoutes");
 
 const app = express();
 

@@ -1,24 +1,18 @@
 const Task = require("../models/Task");
-const user = require("../models/User");
-const bycrypt = require("bcryptjs");    
+const User = require("../models/User");
 
 const getUsers = async (req, res) => {
     try {
         const users = await User.find({ role: 'member'}).select("-password");
 
         const usersWithTaskCounts = await Promise.all(
-            users.map(async (user) =>{
-                const pendingTasks = await Task.countDocuments({ assignedTo: user._id, status: "Pending" });
-                const inProgressTasks = await Task.countDocuments({ assignedTo: user._id, status: "In Progress" });
-                const completedTasks = await Task.countDocuments({ assignedTo: user._id, status: "Completed" });
-                
-                return {
-                    ...user._doc,
-                    pendingTasks,
-                    inProgressTasks,
-                    completedTasks
-                };
+            users.map(async (user) =>({
+                ...user._doc,
+                pendingTasks: await Task.countDocuments({ assignedTo: user._id, status: "Pending" }),
+                inProgressTasks: await Task.countDocuments({ assignedTo: user._id, status: "In Progress" }),
+                completedTasks: await Task.countDocuments({ assignedTo: user._id, status: "Completed" }),
             })
+            )
         );
         res.json(usersWithTaskCounts);
     } catch (error) {
@@ -28,7 +22,7 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).select("-password");
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -38,17 +32,6 @@ const getUserById = async (req, res) => {
     }
 };
 
-const deleteUsers = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        await user.remove();
-        res.json({ message: "User removed" });
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
-    }
-};
 
-module.exports = { getUsers, getUserById, deleteUsers };
+
+module.exports = { getUsers, getUserById };

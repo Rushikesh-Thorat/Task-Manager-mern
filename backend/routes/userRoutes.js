@@ -1,10 +1,11 @@
 const express = require("express");
-const { adminOnly } = require("../middlewares/authMiddleware");
+const { protect, adminOnly } = require("../middlewares/authMiddleware");
+const { getUsers, getUserById } = require("../controllers/userController");
 
 const router = express.Router();
 
-router.get("/", protect, adminOnly, getUsers);
+router.get("/", protect,adminOnly,getUsers);
 router.get("/:id", protect, getUserById);
-router.delete("/:id", protect, adminOnly, deleteUsers);
 
 module.exports = router;
+
