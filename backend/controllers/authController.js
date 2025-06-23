@@ -14,7 +14,7 @@ const registerUser = async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     let role = "member";
@@ -44,6 +44,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+  
 const loginUser = async (req, res) =>{
     try{
         const {email, password} = req.body;
