@@ -3,6 +3,7 @@ import { API_PATHS } from '../../utils/apiPaths';
 import axiosInstance from '../../utils/axiosInstance';
 import { LuUsers } from 'react-icons/lu';
 import Modal from '../Modal';
+import AvatarGroup from '../AvatarGroup';
 
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     const [allUsers, setAllUsers] = useState([]);
@@ -52,6 +53,12 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 </button>
             )}
 
+            {selectedUserAvatars.length > 0 && (
+                <div className="cursor-pointer" onClick={() => setIsModalOpen(true)}>
+                    <AvatarGroup avatars={selectedUserAvatars} maxVisible ={3} />
+                </div>
+            )}
+
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
@@ -84,6 +91,18 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                             />
                         </div>
                     ))}
+                </div>
+
+                <div className="flex justify-end gap-4 pt-4">
+                    <button
+                        className="card-btn"
+                        onClick={() => setIsModalOpen(false)}
+                    >
+                        Cancel
+                    </button>
+                    <button className="card-btn-fill" onClick={handleAssign}>
+                        Done
+                    </button>
                 </div>
             </Modal>
         </div>
