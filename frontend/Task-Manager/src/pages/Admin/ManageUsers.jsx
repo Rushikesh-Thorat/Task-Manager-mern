@@ -1,8 +1,9 @@
 import React from 'react'
+import DashboardLayout from '../../components/layouts/DashboardLayout'
 
 function ManageUsers() {
   return (
-    <div>ManageUsers</div>
+    <DashboardLayout>ManageUsers</DashboardLayout>
   )
 }
 

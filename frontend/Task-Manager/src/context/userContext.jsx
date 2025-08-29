@@ -9,8 +9,6 @@ const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (user) return;
-
         const accessToken = localStorage.getItem('token');
         if(!accessToken) {
             setLoading(false);
@@ -23,6 +21,7 @@ const UserProvider = ({ children }) => {
                 setUser(response.data);
             } catch (error) {
                 console.log("User not authenticated",error);
+                localStorage.removeItem('token');
             } finally {
                 setLoading(false);
             }
