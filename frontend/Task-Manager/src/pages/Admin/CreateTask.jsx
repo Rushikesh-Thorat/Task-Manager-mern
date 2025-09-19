@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/layouts/DashboardLayout'
 import { PRIORITY_DATA } from '../../utils/data'
 import axiosInstance from '../../utils/axiosInstance'
@@ -74,7 +74,9 @@ const CreateTask = () => {
     }
   };
 
-  const updateTask = async () => {}
+  const updateTask = async () => {
+    
+  }
 
   const handleSubmit = async () => {
     setError(null)
@@ -105,9 +107,44 @@ const CreateTask = () => {
     createTask()
   }
 
-  const getTaskDetailsById = async () => {}
+  const getTaskDetailsById = async () => {
+    try{
+      const  response = await axiosInstance.get(
+        API_PATHS.TASKS.GET_TASK_BY_ID(taskId)
+      );
+      if(response.data){
+        const taskInfo = response.data;
+        setCurrentTask(taskInfo);
+
+        setTaskData((prevState) => ({
+          title: taskInfo.title,
+          description: taskInfo.description,
+          priority: taskInfo.priority,
+          dueDate: taskInfo.dueDate
+            ? moment(taskInfo.dueDate).format("YYYY-MM-DD")
+            : null,
+          assignedTo: taskInfo?.assignedTo?.map((item) => item?._id) || [],
+          todoChecklist: taskInfo?.todoChecklist?.map((item) => item?.text) || [],
+          attachments: taskInfo?.attachments || [],
+        }));
+      }
+    } catch(error){
+      console.error("Error fetching users:", error);
+    }
+  };
 
   const deleteTask = async () => {}
+
+  useEffect(() => {
+    if(taskId){
+      getTaskDetailsById(taskId)
+    }
+  
+    return () => {
+      
+    }
+  }, [taskId])
+  
 
   return (
     <DashboardLayout activeMenu="Create Task">
