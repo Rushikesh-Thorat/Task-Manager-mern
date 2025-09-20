@@ -86,7 +86,7 @@ const TaskCard = ({
             <div>
                 <label className="text-xs text-gray-500">Due Date</label>
                 <p className="text-[13px] font-medium text-gray-900">
-                {moment(createdAt).format("Do MMM YYYY")}</p>
+                {moment(dueDate).format("Do MMM YYYY")}</p>
             </div>
         </div>
 
