@@ -23,22 +23,23 @@ const TaskCard = ({
     const getStatusTagColor = () => {
         switch (status) {
             case "In Progress":
-                return " text-cyan-500 bg-cyan-50 border border-cyan-500/10"
+                return " text-cyan-500 bg-cyan-200 border border-cyan-500/10";
             case "Completed":
-                return " text-lime-500 bg-lime-50 border border-lime-500/10"
+                return " text-lime-500 bg-lime-100 border border-lime-500/10";
+            
             default:
-                return "text-voilet-500 bg-voilet-50 border border-voilet-500/10"
+                return "text-purple-500 bg-purple-100 border border-purple-500/10"
         }
     };
 
     const getPriorityTagColor = () => {
         switch (priority) {
             case "Low":
-                return " text-emerald-500 bg-emerald-50 border border-emerald-500/10";
+                return " text-emerald-500 bg-emerald-100 border border-emerald-500/10";
             case "Medium":
-                return " text-amber-500 bg-amber-50 border border-amber-500/10";
+                return " text-amber-500 bg-amber-100 border border-amber-500/10";
             default:
-                return " text-rose-500 bg-rose-50 border border-rose-500/10"           
+                return " text-rose-500 bg-rose-100 border border-rose-500/10"           
         }
     };
 
@@ -57,12 +58,12 @@ const TaskCard = ({
             {priority} Priority
         </div>
     </div>
-    <div className="px-4">
-        <p className="">
+    <div className="px-4 ">
+        <p className="font-semibold">
             {title}
         </p>
 
-        <p className="">
+        <p className="text-[13px] ">
             {description}
         </p>
 

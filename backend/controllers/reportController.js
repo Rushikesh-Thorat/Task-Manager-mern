@@ -10,13 +10,13 @@ const exportTasksReport = async (req, res) =>{
         const worksheet = workbook.addWorksheet("Tasks Report");
 
         worksheet.columns = [
-            { header: "Task ID", key: "_id", width: 25},
-            { header: "Title", key: "title", width: 30},
+            { header: "Task ID", key: "_id", width: 35},
+            { header: "Title", key: "title", width: 35},
             { header: "Description", key: "description", width: 50},
-            { header: "priority", key: "priority", width: 15},
+            { header: "Priority", key: "priority", width: 15},
             { header: "Status", key: "status", width: 20},
             { header: "Due Date", key: "dueDate", width: 20},
-            { header: "Assigned To", key: "assignedTo", width: 30},
+            { header: "Assigned To", key: "assignedTo", width: 60},
         ];
 
         tasks.forEach((task) => {
@@ -29,7 +29,7 @@ const exportTasksReport = async (req, res) =>{
                 description: task.description,
                 priority: task.priority,
                 status: task.status,
-                deuDate: task.dueDate.toISOString().split("T")[0],
+                dueDate: task.dueDate.toISOString().split("T")[0],
                 assignedTo: assignedTo || "Unassigned",
             });
         });
@@ -49,8 +49,8 @@ const exportTasksReport = async (req, res) =>{
 
 const exportUsersReport = async (req, res) =>{
     try{
-        const users = await User.find().select("name email_id").lean();
-        const userTasks = await Task.find().populate("assignedTo", "name email_id");
+        const users = await User.find().select("name email").lean();
+        const userTasks = await Task.find().populate("assignedTo", "name email").lean();
 
         const userTaskMap = {};
         users.forEach((user) => {
@@ -58,23 +58,30 @@ const exportUsersReport = async (req, res) =>{
                 name: user.name,
                 email_id: user.email,
                 taskCount: 0,
-                pendingCount: 0,
-                inProgressCount: 0,
-                completedCount: 0,
+                pendingTasks: 0,
+                inProgressTasks: 0,
+                completedTasks: 0,
             };
         });
         
         userTasks.forEach((task) => {
-            if(task.assignedTo){
+            if (task.assignedTo) {
                 task.assignedTo.forEach((assignedUser) => {
-                    if(userTaskMap[assignedUser._id]){
-                        userTaskMap[assignedUser._id].taskCount +=1;
-                        if(task.status === "Pending"){
-                            userTaskMap[assignedUser._id].pendingTasks +=1;
-                        }else if(task.status === "In Progress"){
-                            userTaskMap[assignedUser._id].inProgressTasks +=1;
-                        }else if(task.status === "Completed"){
-                            userTaskMap[assignedUser._id].completedTasks +=1;
+                    const userTask = userTaskMap[assignedUser._id];
+                    if (userTask) {
+                        userTask.taskCount += 1;
+                        switch (task.status) {
+                            case "Pending":
+                                userTask.pendingTasks = (userTask.pendingTasks || 0) + 1;
+                                break;
+                            case "In Progress":
+                                userTask.inProgressTasks = (userTask.inProgressTasks || 0) + 1;
+                                break;
+                            case "Completed":
+                                userTask.completedTasks = (userTask.completedTasks || 0) + 1;
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });
@@ -85,16 +92,23 @@ const exportUsersReport = async (req, res) =>{
         const worksheet = workbook.addWorksheet("User Task Report");
 
         worksheet.columns = [
-            { header: "Name", key: "name", width: 303},
+            { header: "Name", key: "name", width: 30},
             { header: "Email", key: "email_id", width: 40},
             { header: "Total Assigned Tasks", key: "taskCount", width: 20},
             { header: "Pending Tasks", key: "pendingTasks", width:20},
             { header: "In Progress Tasks", key: "inProgressTasks", width: 20},
             { header: "Completed Tasks", key: "completedTasks", width: 20},
         ];
-        Object.values[userTaskMap].forEach((user) => {
-            worksheet.addRow(user);
+        Object.values(userTaskMap).forEach((user) => {
+            worksheet.addRow({
+                ...user,
+                taskCount: user.taskCount || 0,
+                pendingTasks: user.pendingTasks || 0,
+                inProgressTasks: user.inProgressTasks || 0,
+                completedTasks: user.completedTasks || 0,
+            });
         });
+
 
         res.setHeader(
             "Content-Type",
