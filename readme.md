@@ -111,9 +111,9 @@ Open your browser and go to `http://localhost:5173`
 ---
 
 ## 📸 Project Layout (Screenshots)
-![](Project-layout/1auth.png)
-![](Project-layout/2Admin1.png)
-![](Project-layout/2Admin2.png)
-![](Project-layout/3User1.png)
-![](Project-layout/3User2.png)
+![](Project-Layout/1auth.png)
+![](Project-Layout/2Admin1.png)
+![](Project-Layout/2Admin2.png)
+![](Project-Layout/3User1.png)
+![](Project-Layout/3User2.png)
 ---
