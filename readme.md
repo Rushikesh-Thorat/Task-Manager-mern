@@ -1,4 +1,4 @@
-# 📌 Sauf Task Manager - Work Pending
+# 📌 Sauf Task Manager 
 
 A full-featured task management application designed for individuals and teams to organize, track, and collaborate on tasks effectively.
 
@@ -110,10 +110,23 @@ Open your browser and go to `http://localhost:5173`
 
 ---
 
-## 📸 Project Layout (Screenshots)
+## 📸 Project Layou (Structure)
 ![](Project-Layout/1auth.png)
 ![](Project-Layout/2Admin1.png)
 ![](Project-Layout/2Admin2.png)
 ![](Project-Layout/3User1.png)
 ![](Project-Layout/3User2.png)
+---
+
+## 📸 Project Screenshots
+### Login / SignUp Page
+![](Project-ScreenShots/1.png)
+![](Project-ScreenShots/2.png)
+### Admin Pages
+![](Project-ScreenShots/3.png)
+![](Project-ScreenShots/4.png)
+![](Project-ScreenShots/5.png)
+### User Pages
+![](Project-ScreenShots/6.png)
+![](Project-ScreenShots/7.png)
 ---
