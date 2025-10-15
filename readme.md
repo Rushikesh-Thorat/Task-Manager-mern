@@ -110,7 +110,7 @@ Open your browser and go to `http://localhost:5173`
 
 ---
 
-## 📸 Project Layou (Structure)
+## 📸 Project Layout (Structure)
 ![](Project-Layout/1auth.png)
 ![](Project-Layout/2Admin1.png)
 ![](Project-Layout/2Admin2.png)
